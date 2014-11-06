@@ -28,55 +28,108 @@ public class Magpie
   *            the user statement
   * @return a response based on the rules given
   */
+ //copy pasted from magpie 3
+ private int findKeyword(String statement, String goal,
+   int startPos)
+ {
+  String phrase = statement.trim();
+  // The only change to incorporate the startPos is in
+  // the line below
+  int psn = phrase.toLowerCase().indexOf(
+    goal.toLowerCase(), startPos);
+
+  // Refinement--make sure the goal isn't part of a
+  // word
+  while (psn >= 0)
+  {
+   // Find the string of length 1 before and after
+   // the word
+   String before = " ", after = " ";
+   if (psn > 0)
+   {
+    before = phrase.substring(psn - 1, psn)
+      .toLowerCase();
+   }
+   if (psn + goal.length() < phrase.length())
+   {
+    after = phrase.substring(
+      psn + goal.length(),
+      psn + goal.length() + 1)
+      .toLowerCase();
+   }
+
+   // If before and after aren't letters, we've
+   // found the word
+   if (((before.compareTo("a") < 0) || (before
+     .compareTo("z") > 0)) // before is not a
+           // letter
+     && ((after.compareTo("a") < 0) || (after
+       .compareTo("z") > 0)))
+   {
+    return psn;
+   }
+
+   // The last position didn't work, so let's find
+   // the next, if there is one.
+   psn = phrase.indexOf(goal.toLowerCase(),
+     psn + 1);
+
+  }
+
+  return -1;
+ }
+//copy pasted from magpie 3
  public String getResponse(String statement)
  {
   String response = "";
   String z = statement.trim();
   
-  if (statement.indexOf("no") >= 0)
+  
+  
+  if (findKeyword(statement, "no", 0) >= 0)
   {
    response = "Why so negative?";
   }
-  else if (statement.indexOf("mother") >= 0
-    || statement.indexOf("father") >= 0
-    || statement.indexOf("sister") >= 0
-    || statement.indexOf("brother") >= 0
-    || statement.indexOf("mom") >= 0
-    || statement.indexOf("Mom") >= 0    
-    || statement.indexOf("dad") >= 0
-    || statement.indexOf("Dad") >= 0)
+  else if (findKeyword(statement, "mother", 0) >= 0
+    || findKeyword(statement, "father", 0) >= 0
+    || findKeyword(statement, "sister", 0) >= 0
+    || findKeyword(statement, "brother", 0) >= 0
+    || findKeyword(statement, "mom", 0) >= 0
+    || findKeyword(statement, "dad", 0) >= 0)
   {
    response = "Tell me more about your family.";
   }
   
-  else if (statement.indexOf("hate") >= 0)
+  else if (findKeyword(statement, "hate", 0) >= 0)
   {
     response = "Hate is a strong word.";
   }
            
-  else if (statement.indexOf("shit") >= 0
-    || statement.indexOf("fuck") >= 0
-    || statement.indexOf("bitch") >= 0
-    || statement.indexOf("ass") >= 0
-    || statement.indexOf("douche") >= 0)
+  else if (findKeyword(statement, "shit", 0) >= 0
+    || findKeyword(statement, "fuck", 0) >= 0
+    || findKeyword(statement, "bitch", 0) >= 0
+    || findKeyword(statement, "ass", 0) >= 0
+    || findKeyword(statement, "douche", 0) >= 0)
      {
        response = "HEY.  This is a family-friendly program, you son of a motherless goat.  At least be creative.";
      }
   
-  else if (statement.indexOf("42") >= 0)
+  else if (findKeyword(statement,"42", 0) >= 0)
   {
     response = "Ah, the meaning of life, the universe, and everything.";
   }
   
-  else if (statement.indexOf("cat") >= 0
-    || statement.indexOf("dog") >= 0
-    || statement.indexOf("pet") >= 0)
+  else if (findKeyword(statement, "cat", 0) >= 0
+    || findKeyword(statement, "dog", 0) >= 0
+    || findKeyword(statement, "pet", 0) >= 0)
      {
        response = "Tell me more about your pets.";
      }
   
-  else if (statement.indexOf("iang") >= 0
-    || statement.indexOf("andgraf") >= 0) 
+  else if (findKeyword(statement, "kiang", 0) >= 0 
+    || findKeyword(statement, "landgraf", 0) >= 0
+    || findKeyword(statement, "Landgraf", 0) >= 0
+    || findKeyword(statement, "Kiang", 0) >= 0)     
      {
       response = "He sounds like a very cool teacher.  Probably attractive, too.  Sounds like the kind of guy who might give extra credit for flattery.";
      }
