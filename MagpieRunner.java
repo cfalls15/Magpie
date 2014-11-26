@@ -27,3 +27,6 @@ public class MagpieRunner
  }
 
 }
+//I know this isn't perfect, but it's so late that I figured I should just get it in already
+//I could only figure out how to hard code the verb transformations,
+//so I only did a couple
